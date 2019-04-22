@@ -564,7 +564,7 @@
 	ХозрасчетныйОбороты.Субконто1,
 	ХозрасчетныйОбороты.ПериодМесяц,
 	ХозрасчетныйОбороты.Подразделение,
-	СУММА(ХозрасчетныйОбороты.СуммаОборотКт),
+	СУММА(-ХозрасчетныйОбороты.СуммаОборотКт),
 	ХозрасчетныйОбороты.Счет,
 	"Расходы",
 	ХозрасчетныйОбороты.Подразделение.ИБ_ЭтоОфис,
@@ -1538,6 +1538,34 @@
 			</dcscor:item>
 		</appearance>
 	</calculatedField>
+	<calculatedField>
+		<dataPath>ОтклонениеПроцент</dataPath>
+		<expression/>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>% Факт-ОП</v8:content>
+			</v8:item>
+		</title>
+		<appearance>
+			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+				<dcscor:use>false</dcscor:use>
+				<dcscor:parameter>СтильГраницы</dcscor:parameter>
+				<dcscor:value xsi:type="v8ui:Line" width="1" gap="false">
+					<v8ui:style xsi:type="v8ui:SpreadsheetDocumentCellLineType">Solid</v8ui:style>
+				</dcscor:value>
+			</dcscor:item>
+			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+				<dcscor:parameter>Формат</dcscor:parameter>
+				<dcscor:value xsi:type="v8:LocalStringType">
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>ЧДЦ=1; ЧФ=Ч%</v8:content>
+					</v8:item>
+				</dcscor:value>
+			</dcscor:item>
+		</appearance>
+	</calculatedField>
 	<totalField>
 		<dataPath>СовокупныйДоход</dataPath>
 		<expression>Сумма(СовокупныйДоход)</expression>
@@ -1603,6 +1631,17 @@
 	<totalField>
 		<dataPath>ИтогФакт</dataPath>
 		<expression>Сумма(СовокупныйДоход)- Сумма(Совокупныйрасход)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>ОтклонениеПроцент</dataPath>
+		<expression>ВЫБОР КОГДА Сумма(СуммаОП)=0 ТОГДА 0 ИНАЧЕ Сумма(СуммаФакт)/Сумма(СуммаОП)*100 КОНЕЦ</expression>
+		<group>ВидДвижения</group>
+	</totalField>
+	<totalField>
+		<dataPath>ОтклонениеПроцент</dataPath>
+		<expression>ВЫБОР КОГДА Сумма(СуммаОП)=0 ТОГДА 0 
+ИНАЧЕ (Сумма(СовокупныйДоход)- Сумма(Совокупныйрасход))/(Сумма(БП_Доход)-Сумма(БП_Расход))*100 КОНЕЦ</expression>
+		<group>ОбщийИтог</group>
 	</totalField>
 	<parameter>
 		<name>НачалоПериода</name>
@@ -3892,6 +3931,9 @@
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Отклонение</dcsset:field>
 				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ОтклонениеПроцент</dcsset:field>
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
@@ -4019,7 +4061,7 @@
 				<dcsset:item>
 					<dcsset:selection>
 						<dcsset:item>
-							<dcsset:field>Отклонение</dcsset:field>
+							<dcsset:field>ОтклонениеПроцент</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:filter/>
@@ -4068,6 +4110,9 @@
 						</dcsset:item>
 						<dcsset:item>
 							<dcsset:field>СуммаФакт</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Отклонение</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:filter/>
@@ -4158,6 +4203,9 @@
 						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>Отклонение</dcsset:field>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:SelectedItemField">
+							<dcsset:field>ОтклонениеПроцент</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:item>
@@ -4274,6 +4322,9 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Отклонение</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ОтклонениеПроцент</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
@@ -4445,6 +4496,9 @@
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>Отклонение</dcsset:field>
 						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:SelectedItemField">
+							<dcsset:field>ОтклонениеПроцент</dcsset:field>
+						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:item>
 						<dcsset:groupItems>
@@ -4522,6 +4576,9 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Отклонение</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ОтклонениеПроцент</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
@@ -4856,6 +4913,9 @@
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Отклонение</dcsset:field>
 				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ОтклонениеПроцент</dcsset:field>
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
@@ -4986,7 +5046,7 @@
 				<dcsset:item>
 					<dcsset:selection>
 						<dcsset:item>
-							<dcsset:field>Отклонение</dcsset:field>
+							<dcsset:field>ОтклонениеПроцент</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:filter/>
@@ -5041,6 +5101,9 @@
 						</dcsset:item>
 						<dcsset:item>
 							<dcsset:field>ПользовательскиеПоля.Поле1</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Отклонение</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:filter/>
@@ -5161,6 +5224,9 @@
 						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>Отклонение</dcsset:field>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:SelectedItemField">
+							<dcsset:field>ОтклонениеПроцент</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
 				</dcsset:row>
